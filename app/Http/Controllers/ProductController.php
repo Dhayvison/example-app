@@ -42,10 +42,14 @@ class ProductController extends Controller
         return redirect('product');
     }
 
-    public function index(): Response
+    public function index(Request $request): Response
     {
         return Inertia::render('Product/Index', [
-            'products' => new ProductCollection(Product::orderBy('name')->paginate())
+            'products' => new ProductCollection(
+                Product::orderBy('name')
+                    ->filter($request->only('search'))
+                    ->paginate()
+            )
         ]);
     }
 

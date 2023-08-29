@@ -1,12 +1,25 @@
 import PrimaryButton from "@/Components/PrimaryButton";
 import SecondaryButton from "@/Components/SecondaryButton";
+import TextInput from "@/Components/TextInput";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import { Head, Link } from "@inertiajs/react";
+import { Head, Link, router } from "@inertiajs/react";
+
+import { useState } from "react";
 
 export default function Index({ auth, products }) {
     const { data, meta } = products;
+    const [search, setSearch] = useState("");
 
-    console.log(data, meta);
+    function handleSearch(e) {
+        router.get(
+            route(route().current()),
+            { search },
+            {
+                replace: true,
+                preserveState: true,
+            }
+        );
+    }
 
     return (
         <AuthenticatedLayout
@@ -21,7 +34,19 @@ export default function Index({ auth, products }) {
 
             <div className="py-12">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                    <div className="flex items-center justify-end px-4 sm:px-0">
+                    <div className="flex items-center justify-between px-4 sm:px-0">
+                        <div className="flex items-center gap-2">
+                            <TextInput
+                                type="search"
+                                placeholder="Search..."
+                                value={search}
+                                onChange={(e) => setSearch(e.target.value)}
+                            ></TextInput>
+                            <SecondaryButton onClick={(e) => handleSearch(e)}>
+                                Buscar
+                            </SecondaryButton>
+                        </div>
+
                         <Link href={route("product.create")}>
                             <PrimaryButton>Register</PrimaryButton>
                         </Link>
