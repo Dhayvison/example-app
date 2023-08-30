@@ -63,7 +63,7 @@ export default function Index({ auth, products }) {
                     </div>
                     <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg mt-4">
                         <div className="w-full p-4">
-                            <p className="text-center">
+                            <p className="text-center opacity-50">
                                 <strong>
                                     <small>
                                         Listing {data.length} of {meta.total}{" "}
@@ -93,7 +93,10 @@ export default function Index({ auth, products }) {
                                                 <td className="px-2 py-4 whitespace-no-wrap border-b ">
                                                     {product.name}
                                                 </td>
-                                                <td className="px-2 py-4 whitespace-no-wrap border-b max-w-md truncate">
+                                                <td
+                                                    className="px-2 py-4 whitespace-no-wrap border-b max-w-md truncate"
+                                                    title={product.description}
+                                                >
                                                     {product.description}
                                                 </td>
                                                 <td className="px-2 py-4 whitespace-no-wrap border-b max-w-md">
