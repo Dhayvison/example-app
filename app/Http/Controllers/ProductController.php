@@ -49,6 +49,7 @@ class ProductController extends Controller
                 Product::orderBy('name')
                     ->filter($request->only('search'))
                     ->paginate()
+                    ->appends($request->all())
             )
         ]);
     }

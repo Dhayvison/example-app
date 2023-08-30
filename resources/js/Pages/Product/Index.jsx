@@ -1,16 +1,19 @@
+import { useState } from "react";
+import Pagination from "@/Components/Pagination";
 import PrimaryButton from "@/Components/PrimaryButton";
 import SecondaryButton from "@/Components/SecondaryButton";
 import TextInput from "@/Components/TextInput";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, Link, router } from "@inertiajs/react";
 
-import { useState } from "react";
-
 export default function Index({ auth, products }) {
     const { data, meta } = products;
-    const [search, setSearch] = useState("");
+    console.log(products);
+    const [search, setSearch] = useState();
 
-    function handleSearch(e) {
+    const handleSearch = (e) => {
+        e.preventDefault();
+
         router.get(
             route(route().current()),
             { search },
@@ -19,7 +22,7 @@ export default function Index({ auth, products }) {
                 preserveState: true,
             }
         );
-    }
+    };
 
     return (
         <AuthenticatedLayout
@@ -35,24 +38,39 @@ export default function Index({ auth, products }) {
             <div className="py-12">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <div className="flex items-center justify-between px-4 sm:px-0">
-                        <div className="flex items-center gap-2">
-                            <TextInput
-                                type="search"
-                                placeholder="Search..."
-                                value={search}
-                                onChange={(e) => setSearch(e.target.value)}
-                            ></TextInput>
-                            <SecondaryButton onClick={(e) => handleSearch(e)}>
-                                Buscar
-                            </SecondaryButton>
-                        </div>
+                        <form onSubmit={handleSearch}>
+                            <div className="flex items-center gap-2">
+                                <TextInput
+                                    type="search"
+                                    placeholder="Search..."
+                                    value={search}
+                                    onChange={(e) => setSearch(e.target.value)}
+                                ></TextInput>
+                                <SecondaryButton type="submit">
+                                    Search
+                                </SecondaryButton>
+                            </div>
+                        </form>
+
+                        <Pagination
+                            meta={meta}
+                            route={route().current()}
+                        ></Pagination>
 
                         <Link href={route("product.create")}>
                             <PrimaryButton>Register</PrimaryButton>
                         </Link>
                     </div>
                     <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg mt-4">
-                        <div className="w-full mx-auto p-4">
+                        <div className="w-full p-4">
+                            <p className="text-center">
+                                <strong>
+                                    <small>
+                                        Listing {data.length} of {meta.total}{" "}
+                                        items in total
+                                    </small>
+                                </strong>
+                            </p>
                             <table className="w-full">
                                 <thead>
                                     <tr>
@@ -75,7 +93,7 @@ export default function Index({ auth, products }) {
                                                 <td className="px-2 py-4 whitespace-no-wrap border-b ">
                                                     {product.name}
                                                 </td>
-                                                <td className="px-2 py-4 whitespace-no-wrap border-b max-w-md">
+                                                <td className="px-2 py-4 whitespace-no-wrap border-b max-w-md truncate">
                                                     {product.description}
                                                 </td>
                                                 <td className="px-2 py-4 whitespace-no-wrap border-b max-w-md">
