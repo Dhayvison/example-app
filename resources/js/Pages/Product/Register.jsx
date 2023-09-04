@@ -5,6 +5,7 @@ import TextInput from "@/Components/TextInput";
 import { Head, Link, useForm } from "@inertiajs/react";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import SecondaryButton from "@/Components/SecondaryButton";
+import Container from "@/Components/Container";
 
 export default function Register({ auth }) {
     const { data, setData, post, processing, errors, reset } = useForm({
@@ -31,13 +32,17 @@ export default function Register({ auth }) {
             <Head title="Create Product" />
 
             <div className="py-12">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <Container>
                     <div className="flex items-center justify-end px-4 sm:px-0">
                         <Link href={route("product")}>
                             <SecondaryButton>Return</SecondaryButton>
                         </Link>
                     </div>
-                    <form onSubmit={submit}>
+
+                    <form
+                        onSubmit={submit}
+                        className="p-4 mt-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg"
+                    >
                         <div>
                             <InputLabel htmlFor="name" value="Name" />
 
@@ -109,7 +114,7 @@ export default function Register({ auth }) {
                             </PrimaryButton>
                         </div>
                     </form>
-                </div>
+                </Container>
             </div>
         </AuthenticatedLayout>
     );

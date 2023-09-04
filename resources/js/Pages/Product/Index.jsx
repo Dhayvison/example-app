@@ -5,6 +5,7 @@ import SecondaryButton from "@/Components/SecondaryButton";
 import TextInput from "@/Components/TextInput";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, Link, router } from "@inertiajs/react";
+import Container from "@/Components/Container";
 
 export default function Index({ auth, products }) {
     const { data, meta } = products;
@@ -36,7 +37,7 @@ export default function Index({ auth, products }) {
             <Head title="Dashboard" />
 
             <div className="py-12">
-                <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
+                <Container>
                     <div className="flex items-center justify-between px-4 sm:px-0">
                         <form onSubmit={handleSearch}>
                             <div className="flex items-center gap-2">
@@ -120,7 +121,7 @@ export default function Index({ auth, products }) {
                             </table>
                         </div>
                     </div>
-                </div>
+                </Container>
             </div>
         </AuthenticatedLayout>
     );
