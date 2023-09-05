@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\ProductRequest;
 use App\Http\Resources\ProductCollection;
 use App\Models\Product;
 use Illuminate\Http\RedirectResponse;
@@ -65,22 +66,24 @@ class ProductController extends Controller
         return Inertia::render('Product/Edit', ['product' => $product]);
     }
 
-    public function update(Request $request, $id): RedirectResponse
+    public function update(ProductRequest $request, $id): RedirectResponse
     {
+        $request->validated();
+
         $product = Product::find($id);
 
         if (is_null($product)) {
             throw new HttpException(404);
         }
 
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'price' => 'required|numeric|min:0',
-        ]);
-        $product->name = $request->name;
-        $product->description = $request->description;
-        $product->price = $request->price;
-        $product->save();
+        if (floatval($product->price) !== floatval($request->price)) {
+            $product->changePrice($request->price);
+        } else {
+            $product->name = $request->name;
+            $product->description = $request->description;
+            $product->price = $request->price;
+            $product->save();
+        }
 
         return redirect('product');
     }

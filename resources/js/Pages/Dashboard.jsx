@@ -18,10 +18,6 @@ export default function Dashboard({ auth }) {
         run();
     });
 
-    useEffect(() => {
-        console.log(data);
-    }, [data]);
-
     return (
         <AuthenticatedLayout
             user={auth.user}

@@ -9,7 +9,6 @@ import Container from "@/Components/Container";
 
 export default function Index({ auth, products }) {
     const { data, meta } = products;
-    console.log(products);
     const [search, setSearch] = useState();
 
     const handleSearch = (e) => {
