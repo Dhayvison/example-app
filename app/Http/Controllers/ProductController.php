@@ -76,14 +76,10 @@ class ProductController extends Controller
             throw new HttpException(404);
         }
 
-        if (floatval($product->price) !== floatval($request->price)) {
-            $product->changePrice($request->price);
-        } else {
-            $product->name = $request->name;
-            $product->description = $request->description;
-            $product->price = $request->price;
-            $product->save();
-        }
+        $product->name = $request->name;
+        $product->description = $request->description;
+        $product->price = $request->price;
+        $product->save();
 
         return redirect('product');
     }
