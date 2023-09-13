@@ -1,31 +1,19 @@
-import InputError from "@/Components/InputError";
-import InputLabel from "@/Components/InputLabel";
-import PrimaryButton from "@/Components/PrimaryButton";
-import TextInput from "@/Components/TextInput";
+import { useState } from "react";
 import { Head, Link, useForm } from "@inertiajs/react";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import SecondaryButton from "@/Components/SecondaryButton";
+import ProductForm from "./Partials/ProductForm";
+import Container from "@/Components/Container";
+import Paper from "@/Components/Paper";
 import DangerButton from "@/Components/DangerButton";
+import Modal from "@/Components/Modal";
 
 export default function Edit({ auth, product }) {
-    const {
-        data,
-        setData,
-        put,
-        processing,
-        errors,
-        delete: destroy,
-    } = useForm({
-        name: product.name,
-        description: product.description ?? "",
-        price: product.price,
+    const [showConfirmDeletionModal, setShowConfirmDeletionModal] =
+        useState(false);
+    const { processing, delete: destroy } = useForm({
+        id: product.id,
     });
-
-    const submit = (e) => {
-        e.preventDefault();
-
-        put(route("product.update", { id: product.id }));
-    };
 
     const deleteProduct = (e) => {
         e.preventDefault();
@@ -47,89 +35,51 @@ export default function Edit({ auth, product }) {
             <Head title="Create Product" />
 
             <div className="py-12">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <Container>
                     <div className="flex items-center justify-end px-4 gap-2 sm:px-0">
-                        <DangerButton onClick={(e) => deleteProduct(e)}>
-                            Delete
+                        <DangerButton
+                            onClick={() => {
+                                setShowConfirmDeletionModal(true);
+                            }}
+                        >
+                            Delete product
                         </DangerButton>
-
                         <Link href={route("product")}>
                             <SecondaryButton>Return</SecondaryButton>
                         </Link>
                     </div>
-                    <form onSubmit={submit}>
-                        <div>
-                            <InputLabel htmlFor="name" value="Name" />
+                    <Paper>
+                        <ProductForm product={product}></ProductForm>
+                    </Paper>
 
-                            <TextInput
-                                id="name"
-                                name="name"
-                                value={data.name}
-                                className="mt-1 block w-full"
-                                isFocused={true}
-                                onChange={(e) =>
-                                    setData("name", e.target.value)
-                                }
-                            />
+                    <Modal
+                        show={showConfirmDeletionModal}
+                        onClose={() => setShowConfirmDeletionModal(false)}
+                    >
+                        <form onSubmit={deleteProduct} className="p-6">
+                            <h2 className="text-lg font-medium">
+                                Are you sure you want to delete this product?
+                            </h2>
 
-                            <InputError
-                                message={errors.name}
-                                className="mt-2"
-                            />
-                        </div>
+                            <div className="mt-6 flex justify-end">
+                                <SecondaryButton
+                                    onClick={() =>
+                                        setShowConfirmDeletionModal(false)
+                                    }
+                                >
+                                    Cancel
+                                </SecondaryButton>
 
-                        <div className="mt-4">
-                            <InputLabel
-                                htmlFor="description"
-                                value="Description"
-                            />
-
-                            <TextInput
-                                id="description"
-                                name="description"
-                                value={data.description}
-                                className="mt-1 block w-full"
-                                onChange={(e) =>
-                                    setData("description", e.target.value)
-                                }
-                            />
-
-                            <InputError
-                                message={errors.description}
-                                className="mt-2"
-                            />
-                        </div>
-
-                        <div className="mt-4">
-                            <InputLabel htmlFor="price" value="Price" />
-
-                            <TextInput
-                                id="price"
-                                type="number"
-                                name="price"
-                                value={data.price}
-                                className="mt-1 block w-full"
-                                onChange={(e) =>
-                                    setData("price", e.target.value)
-                                }
-                            />
-
-                            <InputError
-                                message={errors.price}
-                                className="mt-2"
-                            />
-                        </div>
-
-                        <div className="flex items-center justify-end mt-4">
-                            <PrimaryButton
-                                className="mt-7 w-full"
-                                disabled={processing}
-                            >
-                                Register
-                            </PrimaryButton>
-                        </div>
-                    </form>
-                </div>
+                                <DangerButton
+                                    className="ml-3"
+                                    disabled={processing}
+                                >
+                                    Delete
+                                </DangerButton>
+                            </div>
+                        </form>
+                    </Modal>
+                </Container>
             </div>
         </AuthenticatedLayout>
     );

@@ -1,25 +1,11 @@
-import InputError from "@/Components/InputError";
-import InputLabel from "@/Components/InputLabel";
-import PrimaryButton from "@/Components/PrimaryButton";
-import TextInput from "@/Components/TextInput";
-import { Head, Link, useForm } from "@inertiajs/react";
+import { Head, Link } from "@inertiajs/react";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import SecondaryButton from "@/Components/SecondaryButton";
 import Container from "@/Components/Container";
+import ProductForm from "./Partials/ProductForm";
+import Paper from "@/Components/Paper";
 
 export default function Register({ auth }) {
-    const { data, setData, post, processing, errors, reset } = useForm({
-        name: "",
-        description: "",
-        price: "",
-    });
-
-    const submit = (e) => {
-        e.preventDefault();
-
-        post(route("product.store"));
-    };
-
     return (
         <AuthenticatedLayout
             user={auth.user}
@@ -39,81 +25,9 @@ export default function Register({ auth }) {
                         </Link>
                     </div>
 
-                    <form
-                        onSubmit={submit}
-                        className="p-4 mt-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg"
-                    >
-                        <div>
-                            <InputLabel htmlFor="name" value="Name" />
-
-                            <TextInput
-                                id="name"
-                                name="name"
-                                value={data.name}
-                                className="mt-1 block w-full"
-                                isFocused={true}
-                                onChange={(e) =>
-                                    setData("name", e.target.value)
-                                }
-                            />
-
-                            <InputError
-                                message={errors.name}
-                                className="mt-2"
-                            />
-                        </div>
-
-                        <div className="mt-4">
-                            <InputLabel
-                                htmlFor="description"
-                                value="Description"
-                            />
-
-                            <TextInput
-                                id="description"
-                                name="description"
-                                value={data.description}
-                                className="mt-1 block w-full"
-                                onChange={(e) =>
-                                    setData("description", e.target.value)
-                                }
-                            />
-
-                            <InputError
-                                message={errors.description}
-                                className="mt-2"
-                            />
-                        </div>
-
-                        <div className="mt-4">
-                            <InputLabel htmlFor="price" value="Price" />
-
-                            <TextInput
-                                id="price"
-                                type="number"
-                                name="price"
-                                value={data.price}
-                                className="mt-1 block w-full"
-                                onChange={(e) =>
-                                    setData("price", e.target.value)
-                                }
-                            />
-
-                            <InputError
-                                message={errors.price}
-                                className="mt-2"
-                            />
-                        </div>
-
-                        <div className="flex items-center justify-end mt-4">
-                            <PrimaryButton
-                                className="mt-7 w-full"
-                                disabled={processing}
-                            >
-                                Register
-                            </PrimaryButton>
-                        </div>
-                    </form>
+                    <Paper>
+                        <ProductForm />
+                    </Paper>
                 </Container>
             </div>
         </AuthenticatedLayout>
