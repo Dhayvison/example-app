@@ -3,13 +3,14 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\DB;
 
 class Product extends Model
 {
-    use SoftDeletes;
+    use SoftDeletes, HasFactory;
 
     protected $fillable = [
         'name',
@@ -20,6 +21,8 @@ class Product extends Model
     protected $casts = [
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
+        'deleted_at' => 'datetime',
+        'price' => 'float',
     ];
 
     public function scopeFilter(Builder $query, array $filters)
