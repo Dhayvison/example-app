@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Support\Facades\DB;
 
 class Product extends Model
 {
@@ -31,5 +30,10 @@ class Product extends Model
             $query->where('name', 'ilike', '%' . $search . '%')
                 ->orWhere('description', 'ilike', '%' . $search . '%');
         });
+    }
+
+    public function history()
+    {
+        return $this->hasMany(ProductHistory::class, 'product_id');
     }
 }
