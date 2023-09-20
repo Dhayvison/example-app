@@ -16,8 +16,8 @@ return new class extends Migration
             $table->unsignedBigInteger('product_id');
             $table->unsignedBigInteger('user_id');
             $table->string('action');
-            $table->json('previous_data');
-            $table->json('current_data');
+            $table->json('previous_data')->nullable();
+            $table->json('current_data')->nullable();
             $table->timestamps();
 
             $table->foreign('product_id')->references('id')->on('products');

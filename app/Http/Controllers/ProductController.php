@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\ProductRegistered;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ProductRequest;
 use App\Http\Resources\ProductCollection;
@@ -34,11 +35,13 @@ class ProductController extends Controller
             'price' => 'required|numeric|min:0',
         ]);
 
-        Product::create([
+        $product = Product::create([
             'name' => $request->name,
             'description' => $request->description,
             'price' => $request->price,
         ]);
+
+        event(new ProductRegistered($product, $request->user()));
 
         return redirect('product');
     }
